@@ -6,8 +6,12 @@
 // Sets default values
 ASuckerGun::ASuckerGun()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	GunMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gun Mesh"));
+	GunMesh->SetupAttachment(RootComponent);
+	SuckerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Sucker Mesh"));
+	SuckerMesh->SetupAttachment(GunMesh);
 
 }
 

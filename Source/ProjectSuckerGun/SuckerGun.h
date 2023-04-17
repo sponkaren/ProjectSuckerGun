@@ -10,17 +10,42 @@ UCLASS()
 class PROJECTSUCKERGUN_API ASuckerGun : public AActor
 {
 	GENERATED_BODY()
-	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = SuckerGun, meta = (AllowPrivateAccess = "true"))
+	class UStaticMeshComponent* GunMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = SuckerGun, meta = (AllowPrivateAccess = "true"))
+	class UStaticMeshComponent* SuckerMesh;		
+
+
 public:	
-	// Sets default values for this actor's properties
+	enum class eSuckerState
+	{
+		loaded,
+		aiming,
+		firing,
+		latching,
+		latched,
+		retracting,
+		max_states
+	};
+
 	ASuckerGun();
 
 protected:
-	// Called when the game starts or when spawned
+	
+	FVector suckerPos;
+	FVector gunPos;
+	float fireSpeed;
+	float retractSpeed;
+	float range;
+	eSuckerState suckerState;
+
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
+
 	virtual void Tick(float DeltaTime) override;
 
+	FORCEINLINE class UStaticMeshComponent* GetGunMesh() const { return GunMesh; }
 };

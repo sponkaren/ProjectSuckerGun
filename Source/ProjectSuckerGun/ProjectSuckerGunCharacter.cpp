@@ -47,6 +47,13 @@ AProjectSuckerGunCharacter::AProjectSuckerGunCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+	//Create a sucker gun
+	FName WeaponSocket = "hand_r_weapon_socket";
+	FTransform SocketTransform = GetMesh()->GetSocketTransform(WeaponSocket);
+
+	SuckerGun = GetWorld()->SpawnActorDeferred<ASuckerGun>(BP_SuckerGun, SocketTransform);
+	//SuckerGun->SetupAttachment(GetMesh(), FName(TEXT("hand_r_weapon_socket")));
+
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
