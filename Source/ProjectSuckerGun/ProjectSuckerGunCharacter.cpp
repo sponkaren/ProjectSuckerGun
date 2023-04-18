@@ -47,13 +47,6 @@ AProjectSuckerGunCharacter::AProjectSuckerGunCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	//Create a sucker gun
-	FName WeaponSocket = "hand_r_weapon_socket";
-	FTransform SocketTransform = GetMesh()->GetSocketTransform(WeaponSocket);
-
-	SuckerGun = GetWorld()->SpawnActorDeferred<ASuckerGun>(BP_SuckerGun, SocketTransform);
-	//SuckerGun->SetupAttachment(GetMesh(), FName(TEXT("hand_r_weapon_socket")));
-
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
@@ -71,6 +64,8 @@ void AProjectSuckerGunCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+
+	CreateSuckerGun();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -90,6 +85,9 @@ void AProjectSuckerGunCharacter::SetupPlayerInputComponent(class UInputComponent
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AProjectSuckerGunCharacter::Look);
+
+		//Aiming
+		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Started, this, &AProjectSuckerGunCharacter::Aim);
 
 	}
 
@@ -131,6 +129,51 @@ void AProjectSuckerGunCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
+void AProjectSuckerGunCharacter::Aim(const FInputActionValue& Value)
+{	
+	if (CanJump() || isAiming)
+		isAiming = !isAiming;
+	else
+		return;
+
+	if (isAiming)
+	{
+		if (GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Cyan, TEXT("Aiming!"));
+
+		GetCharacterMovement()->MaxWalkSpeed = 100.0f;
+		GetCharacterMovement()->SetJumpAllowed(false);
+		bUseControllerRotationYaw = true;
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+		FollowCamera->SetFieldOfView(70.0f);
+		
+		
+	}
+
+	else
+	{		
+		if (GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Cyan, TEXT("Not aiming!"));
+		GetCharacterMovement()->MaxWalkSpeed = 500.f;
+		GetCharacterMovement()->SetJumpAllowed(true);
+		bUseControllerRotationYaw = false;
+		FollowCamera->SetFieldOfView(90.0f);
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+	}
+}
+
+void AProjectSuckerGunCharacter::CreateSuckerGun()
+{
+	
+	FName WeaponSocket = "hand_r_Weapon_Socket";
+	FTransform SocketTransform = GetMesh()->GetSocketTransform(WeaponSocket);
+
+	SuckerGun = GetWorld()->SpawnActor<ASuckerGun>(BP_SuckerGun, SocketTransform);
+
+	if(SuckerGun)
+		SuckerGun->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, WeaponSocket);
+
+}
 
 
 

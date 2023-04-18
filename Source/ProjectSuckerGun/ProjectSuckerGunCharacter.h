@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "SuckerGun.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "ProjectSuckerGunCharacter.generated.h"
 
 
@@ -23,10 +24,13 @@ class AProjectSuckerGunCharacter : public ACharacter
 	class UCameraComponent* FollowCamera;
 	
 	
-	UPROPERTY(EditAnywhere, Category = "Player Management")
+	UPROPERTY(EditAnywhere, Category = "Sucker Gun")
 	TSubclassOf<ASuckerGun> BP_SuckerGun;
 
 	ASuckerGun* SuckerGun;
+
+	//UPROPERTY(EditAnywhere, Category = "Sucker Gun")
+	//UPhysicsHandleComponent* PhysicsHandle;
 
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -60,6 +64,7 @@ class AProjectSuckerGunCharacter : public ACharacter
 public:
 	AProjectSuckerGunCharacter();
 	
+	bool isAiming{ false };
 
 protected:
 
@@ -68,6 +73,8 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+	void Aim(const FInputActionValue& Value);
 			
 
 protected:
@@ -82,5 +89,7 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	void CreateSuckerGun();
 };
 
