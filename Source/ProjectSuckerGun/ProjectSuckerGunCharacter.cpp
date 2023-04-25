@@ -9,7 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-
+#include "AimWidget.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AProjectSuckerGunCharacter
@@ -136,30 +136,46 @@ void AProjectSuckerGunCharacter::Aim(const FInputActionValue& Value)
 	else
 		return;
 
+	//Set aiming configs
 	if (isAiming)
 	{
 		if (GEngine)
 			GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Cyan, TEXT("Aiming!"));
 
+		SetCrosshairsVisibility(true);
 		GetCharacterMovement()->MaxWalkSpeed = 100.0f;
 		GetCharacterMovement()->SetJumpAllowed(false);
 		bUseControllerRotationYaw = true;
 		GetCharacterMovement()->bOrientRotationToMovement = false;
-		FollowCamera->SetFieldOfView(70.0f);
-		
-		
+		FollowCamera->SetFieldOfView(50.0f);
+		CameraBoom->TargetOffset = FVector(0.0f, 40.0f, 70.0f);		
 	}
 
+	//Set normal configs
 	else
 	{		
 		if (GEngine)
 			GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Cyan, TEXT("Not aiming!"));
+
+		SetCrosshairsVisibility(false);
 		GetCharacterMovement()->MaxWalkSpeed = 500.f;
 		GetCharacterMovement()->SetJumpAllowed(true);
 		bUseControllerRotationYaw = false;
 		FollowCamera->SetFieldOfView(90.0f);
+		CameraBoom->TargetOffset = FVector(0.0f, 0.0f, 0.0f);
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 	}
+}
+
+bool AProjectSuckerGunCharacter::GetCrosshairs()
+{
+	return true;
+}
+
+void AProjectSuckerGunCharacter::SetCrosshairsVisibility(bool _isVisible)
+{
+	//if (!AimWidget)
+		//SpawnCrosshairs();
 }
 
 void AProjectSuckerGunCharacter::CreateSuckerGun()

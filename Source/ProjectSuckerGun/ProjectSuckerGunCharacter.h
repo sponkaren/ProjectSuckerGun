@@ -7,6 +7,7 @@
 #include "InputActionValue.h"
 #include "SuckerGun.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "AimWidget.h"
 #include "ProjectSuckerGunCharacter.generated.h"
 
 
@@ -84,12 +85,16 @@ protected:
 	// To add mapping context
 	virtual void BeginPlay();
 
+	void SetCrosshairsVisibility(bool _isVisible);
+
+	void CreateSuckerGun();
+
+	bool GetCrosshairs();
+
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-
-	void CreateSuckerGun();
 };
 
