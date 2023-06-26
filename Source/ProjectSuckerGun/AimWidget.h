@@ -19,6 +19,7 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	class UImage* CrossHairsImage;
 
+public:
 	void SetCrosshairsVisibility(bool _isVisible);
 	
 };

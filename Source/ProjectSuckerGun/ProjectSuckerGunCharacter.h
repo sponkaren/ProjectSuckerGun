@@ -10,6 +10,7 @@
 #include "AimWidget.h"
 #include "ProjectSuckerGunCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAimChange, bool, aiming);
 
 UCLASS(config=Game)
 class AProjectSuckerGunCharacter : public ACharacter
@@ -64,7 +65,10 @@ class AProjectSuckerGunCharacter : public ACharacter
 
 public:
 	AProjectSuckerGunCharacter();
-	
+
+	UPROPERTY(BlueprintAssignable, Category = "EventDispatchers")
+	FOnAimChange AimChange;
+
 	bool isAiming{ false };
 
 protected:

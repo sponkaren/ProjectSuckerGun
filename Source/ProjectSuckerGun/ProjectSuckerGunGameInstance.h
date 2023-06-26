@@ -22,4 +22,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player, HUD and UI")
 	class UAimWidget* AimWidget;
 	
+public:
+
+	UFUNCTION(BlueprintCallable, Category = "Player, HUD and UI")
+	void Setup();
+
+	void SpawnAimWidget();
+
+	UFUNCTION()
+	void SetCrosshairsVisibility(bool _isVisible);
 };

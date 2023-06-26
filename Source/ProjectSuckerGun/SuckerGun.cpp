@@ -9,7 +9,7 @@ ASuckerGun::ASuckerGun()
 	PrimaryActorTick.bCanEverTick = true;
 
 	GunMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gun Mesh"));
-	GunMesh->SetupAttachment(RootComponent);
+	SetRootComponent(GunMesh);
 	SuckerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Sucker Mesh"));
 	SuckerMesh->SetupAttachment(GunMesh);
 

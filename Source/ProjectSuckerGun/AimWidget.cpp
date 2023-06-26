@@ -7,10 +7,13 @@ void UAimWidget::SetCrosshairsVisibility(bool _isVisible)
 {
 	if (_isVisible)
 	{
-		UWidget::SetVisibility(ESlateVisibility::HitTestInvisible);
+		//UWidget::SetVisibility(ESlateVisibility::Visible);
+		CrossHairsImage->SetVisibility(ESlateVisibility::HitTestInvisible);
 	}
 	else
 	{
-		UWidget::SetVisibility(ESlateVisibility::Hidden);
+		//UWidget::SetVisibility(ESlateVisibility::Hidden);
+		CrossHairsImage->SetVisibility(ESlateVisibility::Hidden);
+
 	}
 }

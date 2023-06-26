@@ -139,9 +139,6 @@ void AProjectSuckerGunCharacter::Aim(const FInputActionValue& Value)
 	//Set aiming configs
 	if (isAiming)
 	{
-		if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Cyan, TEXT("Aiming!"));
-
 		SetCrosshairsVisibility(true);
 		GetCharacterMovement()->MaxWalkSpeed = 100.0f;
 		GetCharacterMovement()->SetJumpAllowed(false);
@@ -154,9 +151,6 @@ void AProjectSuckerGunCharacter::Aim(const FInputActionValue& Value)
 	//Set normal configs
 	else
 	{		
-		if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Cyan, TEXT("Not aiming!"));
-
 		SetCrosshairsVisibility(false);
 		GetCharacterMovement()->MaxWalkSpeed = 500.f;
 		GetCharacterMovement()->SetJumpAllowed(true);
@@ -174,8 +168,7 @@ bool AProjectSuckerGunCharacter::GetCrosshairs()
 
 void AProjectSuckerGunCharacter::SetCrosshairsVisibility(bool _isVisible)
 {
-	//if (!AimWidget)
-		//SpawnCrosshairs();
+	AimChange.Broadcast(_isVisible);
 }
 
 void AProjectSuckerGunCharacter::CreateSuckerGun()
