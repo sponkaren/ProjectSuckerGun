@@ -6,6 +6,16 @@
 #include "GameFramework/Actor.h"
 #include "SuckerGun.generated.h"
 
+enum class eSuckerState
+{
+	loaded,
+	fired,
+	latching,
+	latched,
+	retracting,
+	max_states
+};
+
 UCLASS()
 class PROJECTSUCKERGUN_API ASuckerGun : public AActor
 {
@@ -18,17 +28,7 @@ class PROJECTSUCKERGUN_API ASuckerGun : public AActor
 	class UStaticMeshComponent* SuckerMesh;		
 
 
-public:	
-	enum class eSuckerState
-	{
-		loaded,
-		aiming,
-		firing,
-		latching,
-		latched,
-		retracting,
-		max_states
-	};
+public:		
 
 	ASuckerGun();
 
@@ -48,4 +48,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	FORCEINLINE class UStaticMeshComponent* GetGunMesh() const { return GunMesh; }
+
+	bool FireTrigger();
+
+	eSuckerState GetState();
 };

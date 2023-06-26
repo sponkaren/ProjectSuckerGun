@@ -29,7 +29,7 @@ class AProjectSuckerGunCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, Category = "Sucker Gun")
 	TSubclassOf<ASuckerGun> BP_SuckerGun;
 
-	ASuckerGun* SuckerGun;
+	ASuckerGun* SuckerGun;	
 
 	//UPROPERTY(EditAnywhere, Category = "Sucker Gun")
 	//UPhysicsHandleComponent* PhysicsHandle;
@@ -80,6 +80,8 @@ protected:
 	void Look(const FInputActionValue& Value);
 
 	void Aim(const FInputActionValue& Value);
+
+	void Fire(const FInputActionValue& Value);
 			
 
 protected:

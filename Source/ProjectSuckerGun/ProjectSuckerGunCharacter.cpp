@@ -89,6 +89,8 @@ void AProjectSuckerGunCharacter::SetupPlayerInputComponent(class UInputComponent
 		//Aiming
 		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Started, this, &AProjectSuckerGunCharacter::Aim);
 
+		//Firing
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Started, this, &AProjectSuckerGunCharacter::Fire);
 	}
 
 }
@@ -145,7 +147,7 @@ void AProjectSuckerGunCharacter::Aim(const FInputActionValue& Value)
 		bUseControllerRotationYaw = true;
 		GetCharacterMovement()->bOrientRotationToMovement = false;
 		FollowCamera->SetFieldOfView(50.0f);
-		CameraBoom->TargetOffset = FVector(0.0f, 40.0f, 70.0f);		
+		CameraBoom->SocketOffset = FVector(0.0f, 40.0f, 70.0f);		
 	}
 
 	//Set normal configs
@@ -156,9 +158,29 @@ void AProjectSuckerGunCharacter::Aim(const FInputActionValue& Value)
 		GetCharacterMovement()->SetJumpAllowed(true);
 		bUseControllerRotationYaw = false;
 		FollowCamera->SetFieldOfView(90.0f);
-		CameraBoom->TargetOffset = FVector(0.0f, 0.0f, 0.0f);
+		CameraBoom->SocketOffset = FVector(0.0f, 0.0f, 0.0f);
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 	}
+}
+
+void AProjectSuckerGunCharacter::Fire(const FInputActionValue& Value)
+{		
+	if (!isAiming) {
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Can't without aiming"));
+		return;
+	}
+
+	if (!SuckerGun) {
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Can't shoow without a gun"));
+		return;
+	}
+
+	bool success = SuckerGun->FireTrigger();
+	
+	if (success) GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Fired"));
+	else GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Alredy fired"));
+	
+	
 }
 
 bool AProjectSuckerGunCharacter::GetCrosshairs()

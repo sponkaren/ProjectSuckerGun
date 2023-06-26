@@ -19,7 +19,7 @@ ASuckerGun::ASuckerGun()
 void ASuckerGun::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	suckerState = eSuckerState::loaded;
 }
 
 // Called every frame
@@ -29,3 +29,18 @@ void ASuckerGun::Tick(float DeltaTime)
 
 }
 
+bool ASuckerGun::FireTrigger()
+{
+	if (suckerState == eSuckerState::loaded)
+	{
+		suckerState = eSuckerState::fired;
+		return true;
+	}
+	
+	return false;
+}
+
+eSuckerState ASuckerGun::GetState()
+{
+	return suckerState;
+}
